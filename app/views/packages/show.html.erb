@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Package #<%= @the_package.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/packages">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_package/<%= @the_package.id %>">
+          Delete package
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Content
+      </dt>
+      <dd>
+        <%= @the_package.content %>
+      </dd>
+
+      <dt>
+        Status
+      </dt>
+      <dd>
+        <%= @the_package.status %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_package.user_id %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_package.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_package.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit package
+    </h2>
+
+    <form action="/modify_package/<%= @the_package.id %>"  method="post" >
+      <div>
+        <label for="content_box">
+          Content
+        </label>
+
+        <input type="text" id="content_box" name="query_content" value="<%= @the_package.content %>">
+      </div>
+
+      <div>
+        <label for="status_box">
+          Status
+        </label>
+
+        <input type="text" id="status_box" name="query_status" value="<%= @the_package.status %>">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_package.user_id %>">
+      </div>
+
+      <button>
+        Update package
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

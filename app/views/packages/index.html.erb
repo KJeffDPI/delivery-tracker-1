@@ -1,0 +1,118 @@
+<div>
+  <div>
+    <h1>
+      Delivery Tracker
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Expecting a package?
+    </h2>
+
+    <form action="/insert_package" method="post">
+      <div>
+        <label for="content_box">
+          Content
+        </label>
+
+        <input type="text" id="content_box" name="query_content">
+      </div>
+
+      <div>
+        <label for="status_box">
+          Status
+        </label>
+
+        <input type="text" id="status_box" name="query_status">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id">
+      </div>
+
+      <button>
+        Create package
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Content
+        </th>
+
+        <th>
+          Status
+        </th>
+
+        <th>
+          User
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_packages.each do |a_package| %>
+      <tr>
+        <td>
+          <%= a_package.id %>
+        </td>
+
+        <td>
+          <%= a_package.content %>
+        </td>
+
+        <td>
+          <%= a_package.status %>
+        </td>
+
+        <td>
+          <%= a_package.user_id %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_package.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_package.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/packages/<%= a_package.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>
