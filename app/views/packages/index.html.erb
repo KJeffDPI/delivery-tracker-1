@@ -1,15 +1,35 @@
+<% if session[:user_id] == nil%>
+<ul>
+  <li><a href="/user_sign_in">Sign in</a>
+  </li>
+  <li><a href="/user_sign_up">Sign up</a>
+  </li>
+  <li><a href="/">Home</a>
+  </li>
+  </ul>
+
+<%else%>
+
+<ul>
+<li><a href="/">Your deliveries</a></li>
+<li><a href="/edit_user_profile">Edit profile</a></li>
+<li><a href="/user_sign_in">Sign Out</a></li>
+</ul>
+<% end %>
+
 <div>
-  <div>
     <h1>
       Delivery Tracker
     </h1>
-  </div>
+
+    <body>
+      Know if something gets lost in the mail.
+    </body>
 </div>
 
 <hr>
 
 <div>
-  <div>
     <h2>
       Expecting a package?
     </h2>
@@ -17,7 +37,7 @@
     <form action="/insert_package" method="post">
       <div>
         <label for="content_box">
-          Content
+         Description
         </label>
 
         <input type="text" id="content_box" name="query_content">
@@ -25,94 +45,78 @@
 
       <div>
         <label for="status_box">
-          Status
+          Supposed to arrive on
         </label>
 
-        <input type="text" id="status_box" name="query_status">
+        <input type="date" id="status_box" name="query_status">
       </div>
 
       <div>
-        <label for="user_id_box">
-          User
+        <label for="content_box">
+          Details
         </label>
 
-        <input type="text" id="user_id_box" name="query_user_id">
+        <textarea type="text" id="content_box" name="query_content"></textarea>
       </div>
 
       <button>
-        Create package
+        Log delivery
       </button>
     </form>
   </div>
 </div>
 
-<hr>
-<div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
+<div class="waiting_on">
+     <h2>Waiting on</h2>
+    <% @list_of_packages.where({ status: "waiting on" }).each do |package| %>
+      <li>
+        <div>
+          <%= package.content %>
+        </div>
 
-        <th>
-          Content
-        </th>
+        <div>
+          <small>
+            Supposed to arrive on 
+          </small>
+          <small>
+            package server
+          </small>
+        </div>
 
-        <th>
-          Status
-        </th>
+        <div>
+          <form action="/modify_package/<%= task.id %>" method="post">
+            <input for="content" type="hidden" name="query_content" value="<%= package.content %>">
 
-        <th>
-          User
-        </th>
+            <input for="status_update" type="hidden" name="query_status" value="received">
 
-        <th>
-          Created at
-        </th>
+            <input for="user" type="hidden" name="query_user_id" value="<%= @current_user.id %>">
 
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_packages.each do |a_package| %>
-      <tr>
-        <td>
-          <%= a_package.id %>
-        </td>
-
-        <td>
-          <%= a_package.content %>
-        </td>
-
-        <td>
-          <%= a_package.status %>
-        </td>
-
-        <td>
-          <%= a_package.user_id %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_package.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_package.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/packages/<%= a_package.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
+            <button>Mark as received</button>
+        </div>
+      </li>
+    <% end %>
+  </ul>
 </div>
 
 <hr>
+
+<div class="received">
+  <h2>Received</h2>
+
+  <ul>
+    <% @list_of_packages.where({ status: "received" }).each do |package| %>
+       <li>
+        <div>
+          <%= package.content %>
+        </div>
+
+        <div>
+          <small>
+            Updated at <%= package.updated %>
+            <a href="/delete_package/<%= package.id %>">Delete</a>
+          </small>
+        </div>
+       </li>
+    <% end %>
+  </ul>
+</div>

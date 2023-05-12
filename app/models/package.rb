@@ -2,12 +2,13 @@
 #
 # Table name: packages
 #
-#  id         :integer          not null, primary key
-#  content    :string
-#  status     :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :integer
+#  id           :integer          not null, primary key
+#  arrival_date :date
+#  content      :string
+#  status       :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :integer
 #
 class Package < ApplicationRecord
 end
