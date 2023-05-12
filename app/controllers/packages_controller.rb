@@ -16,13 +16,20 @@ class PackagesController < ApplicationController
 
   def create
     the_package = Package.new
+    the_package.user_id = session.fetch("query_user_id")
     the_package.content = params.fetch("query_content")
-    the_package.status = params.fetch("query_status")
-    the_package.user_id = params.fetch("query_user_id")
+    the_package.date = params["query_arrival_date"].presence
+
+    if params["query_details"].present?
+      the_package.details = params.fetch("query_details")
+    end
+    
+    the_package.status = "Waiting on"
+    
 
     if the_package.valid?
       the_package.save
-      redirect_to("/", { :notice => "Package created successfully." })
+      redirect_to("/", { :notice => "Added to list." })
     else
       redirect_to("/", { :alert => the_package.errors.full_messages.to_sentence })
     end
@@ -30,11 +37,11 @@ class PackagesController < ApplicationController
 
   def update
     the_id = params.fetch("path_id")
-    the_package = Package.where({ :id => the_id }).at(0)
+    @the_package = Package.where({ :id => the_id }).at(0)
 
-    the_package.content = params.fetch("query_content")
-    the_package.status = params.fetch("query_status")
-    the_package.user_id = params.fetch("query_user_id")
+    if @the_package.status == "Waiting on"
+      @the_package.status = "Received"
+    end
 
     if the_package.valid?
       the_package.save
