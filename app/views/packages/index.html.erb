@@ -87,7 +87,7 @@
         <% if Date.today - package.arrival_date >= 3 %>
           <div class="late">
             <small>
-              Supposed to arrive on <%= package.arrival %>
+              Supposed to arrive on <%= package.arrival_date %>
             </small>
           </div>
 
@@ -118,8 +118,7 @@
 
             <input type="hidden" id="user" name="query_user_id" value="<%= @current_user.id %>">
 
-            <button>Mark as received</button>
-          </form>  
+            <button>Mark as received</button> 
         </div>
       </li>
     <% end %>
@@ -140,7 +139,6 @@
 
         <small>
           Updated at <%= time_ago_in_words(package.updated_at) %> ago <a href="/delete_package/<%= package.id %>">Delete</a>
-        </small>
       </li>
     <% end %>
   </ul>

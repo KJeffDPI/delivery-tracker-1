@@ -49,9 +49,6 @@ class PackagesController < ApplicationController
     the_package.arrival_date = params.fetch("query_arrival")
     the_package.details = params.fetch("query_details")
 
-    if @the_package.status == "Waiting on"
-      @the_package.status = "Received"
-    end
 
     if the_package.valid?
       the_package.save
