@@ -35,7 +35,7 @@
 
   <form action="/insert_package" method="post">
     <div>
-      <label for="query_content">
+      <label for="content_box">
         Description
       </label>
 
@@ -58,6 +58,14 @@
       <textarea type="text" id="details_box" name="query_details" rows="3"></textarea>
     </div>
 
+    <div>
+      <input type="hidden" id="status-box" name="query_status" value="waiting_on">
+    </div>
+
+    <div>
+     <input type="hidden" id="user_id_box" name="query_user_id" value="<%= @current_user.id %>">
+    </div>
+
     <button>
       Log Delivery
     </button>
@@ -76,7 +84,7 @@
           <%= package.content %>
         </div>
 
-        <% if Date.today - package.arrival >= 3 %>
+        <% if Date.today - package.arrival_date >= 3 %>
           <div class="late">
             <small>
               Supposed to arrive on <%= package.arrival %>
@@ -87,7 +95,7 @@
 
           <div>
             <small>
-              Supposed to arrive on <%= package.arrival %>
+              Supposed to arrive on <%= package.arrival_date %>
             </small>
           </div>
         <% end %>
@@ -102,7 +110,7 @@
 
             <input type="hidden" id="package_status" name="query_content" value="<%= package.content %>">
 
-            <input type="hidden" id="arrival" name="query_arrival" value="<%= package.arrival %>">
+            <input type="hidden" id="arrival" name="query_arrival" value="<%= package.arrival_date %>">
 
             <input type="hidden" id="details" name="query_details" value="<%= package.details %>">
 

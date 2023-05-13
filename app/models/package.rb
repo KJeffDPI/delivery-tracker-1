@@ -13,10 +13,11 @@
 #  user_id      :integer
 #
 class Package < ActiveRecord::Base
+  #belongs_to :user, :required => true
   # ...
-  def date=(value)
+  #def date=(value)
     # Set the value of the date attribute here
     # For example:
-    write_attribute(:date, value&.to_date)
-  end
+  #  write_attribute(:date, value&.to_date)
+  #end
 end

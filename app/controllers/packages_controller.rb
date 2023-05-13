@@ -19,13 +19,17 @@ class PackagesController < ApplicationController
     @the_package = matching_packages.at(0)
 
     render({ :template => "packages/show.html.erb" })
+    #redirect_to("/")
   end
 
   def create
     the_package = Package.new
-    the_package.content = params.fetch("query_content")
+    #the_package.item = params.fetch("query_item")
+    the_package.user_id = session.fetch("query_user_id")
+    #the_package.content = params.fetch("query_content")
     the_package.arrival_date = params.fetch("query_arrival")
     the_package.details = params.fetch("query_details")
+    the_package.status = params.fetch("query_status")
     
     if the_package.valid?
       the_package.save
@@ -42,8 +46,12 @@ class PackagesController < ApplicationController
     the_package.content = params.fetch("query_content")
     the_package.status = params.fetch("query_status")
     the_package.user_id = params.fetch("query_user_id")
-    the_package.arrival = params.fetch("query_arrival")
+    the_package.arrival_date = params.fetch("query_arrival")
     the_package.details = params.fetch("query_details")
+
+    if @the_package.status == "Waiting on"
+      @the_package.status = "Received"
+    end
 
     if the_package.valid?
       the_package.save
