@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   #------------------------------
 
   # Routes for the Package resource:
+  get("/", { :controller => "packages", :action => "index" })
 
   # CREATE
   post("/insert_package", { :controller => "packages", :action => "create" })
@@ -46,7 +47,7 @@ Rails.application.routes.draw do
 
   #------------------------------
 
-  root to: "packages#index"
+  #root to: "packages#index"
 
   #get("/", { :controller => "index", :action => "packages" })
 end

@@ -1,35 +1,35 @@
 class PackagesController < ApplicationController
   def index
-    require "date"
-
-    @today = Date.current
-
     matching_packages = Package.all
 
     @list_of_packages = matching_packages.order({ :created_at => :desc })
 
-    @list_of_arriving_packages = @list_of_packages.where({ status: nil })
-    @list_of_delivered_packages = @list_of_packages.where({ status: "true" })
+    @waiting_on = @list_of_packages.where({ :status => "waiting_on" })
+
+    @received = @list_of_packages.where({ :status => "received" })
 
     render({ :template => "packages/index.html.erb" })
   end
 
+  def show
+    the_id = params.fetch("path_id")
+
+    matching_packages = Package.where({ :id => the_id })
+
+    @the_package = matching_packages.at(0)
+
+    render({ :template => "packages/show.html.erb" })
+  end
+
   def create
     the_package = Package.new
-    the_package.user_id = session.fetch("query_user_id")
     the_package.content = params.fetch("query_content")
-    the_package.date = params["query_arrival_date"].presence
-
-    if params["query_details"].present?
-      the_package.details = params.fetch("query_details")
-    end
+    the_package.arrival_date = params.fetch("query_arrival")
+    the_package.details = params.fetch("query_details")
     
-    the_package.status = "Waiting on"
-    
-
     if the_package.valid?
       the_package.save
-      redirect_to("/", { :notice => "Added to list." })
+      redirect_to("/", { :notice => "Added to list" })
     else
       redirect_to("/", { :alert => the_package.errors.full_messages.to_sentence })
     end
@@ -37,17 +37,19 @@ class PackagesController < ApplicationController
 
   def update
     the_id = params.fetch("path_id")
-    @the_package = Package.where({ :id => the_id }).at(0)
+    the_package = Package.where({ :id => the_id }).at(0)
 
-    if @the_package.status == "Waiting on"
-      @the_package.status = "Received"
-    end
+    the_package.content = params.fetch("query_content")
+    the_package.status = params.fetch("query_status")
+    the_package.user_id = params.fetch("query_user_id")
+    the_package.arrival = params.fetch("query_arrival")
+    the_package.details = params.fetch("query_details")
 
     if the_package.valid?
       the_package.save
-      redirect_to("//#{the_package.id}", { :notice => "Package updated successfully."} )
+      redirect_to("/", { :notice => "Delivery updated successfully."} )
     else
-      redirect_to("//#{the_package.id}", { :alert => the_package.errors.full_messages.to_sentence })
+      redirect_to("/", { :alert => the_package.errors.full_messages.to_sentence })
     end
   end
 
@@ -57,6 +59,6 @@ class PackagesController < ApplicationController
 
     the_package.destroy
 
-    redirect_to("/", { :notice => "Package deleted successfully."} )
+    redirect_to("/", { :notice => "Delivery deleted successfully."} )
   end
 end
