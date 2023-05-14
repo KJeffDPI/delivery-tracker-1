@@ -20,10 +20,6 @@
   background-color: lightgoldenrodyellow;
  }
 
- .waiting_on li div:nth-of-type(2) {
-  color: black;
-}
-
-.waiting_on li div:nth-of-type(2).expired {
+ .late {
   color: red;
-}
+ }
