@@ -26,7 +26,7 @@ class PackagesController < ApplicationController
     the_package = Package.new
     #the_package.item = params.fetch("query_item")
     the_package.user_id = session.fetch("query_user_id")
-    #the_package.content = params.fetch("query_content")
+    the_package.content = params.fetch("query_content")
     the_package.arrival_date = params.fetch("query_arrival")
     the_package.details = params.fetch("query_details")
     the_package.status = params.fetch("query_status")
