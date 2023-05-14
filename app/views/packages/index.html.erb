@@ -138,7 +138,8 @@
         </div>
 
         <small>
-          Updated at <%= time_ago_in_words(package.updated_at) %> ago <a href="/delete_package/<%= package.id %>">Delete</a>
+          Updated <%= time_ago_in_words(package.updated_at) %> ago <a href="/delete_package/<%= package.id %>">Delete</a>
+        </small>  
       </li>
     <% end %>
   </ul>
